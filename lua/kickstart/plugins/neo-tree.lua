@@ -14,11 +14,6 @@ return {
     { '\\', ':Neotree toggle<CR>', desc = 'NeoTree toggle', silent = true },
     { '<leader>er', ':Neotree reveal<CR>', desc = 'NeoTree reveal file', silent = true },
   },
-  init = function()
-    vim.api.nvim_create_autocmd({ 'VimEnter', 'TabNew' }, {
-      callback = function() vim.cmd 'Neotree show' end,
-    })
-  end,
   opts = {
     filesystem = {
       window = {
