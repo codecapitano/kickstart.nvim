@@ -79,9 +79,7 @@ return {
             group = vim.api.nvim_create_augroup('EslintFixAll_' .. bufnr, { clear = true }),
             buffer = bufnr,
             callback = function()
-              if vim.fn.exists ':EslintFixAll' > 0 then
-                vim.cmd 'EslintFixAll'
-              end
+              if vim.fn.exists ':EslintFixAll' > 0 then vim.cmd 'EslintFixAll' end
             end,
           })
         end,
