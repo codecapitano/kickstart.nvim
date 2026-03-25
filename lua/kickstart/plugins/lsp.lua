@@ -104,6 +104,7 @@ return {
       'tailwindcss-language-server', -- tailwindcss
       'stylua',
       'prettier',
+      'biome',
     }
 
     require('mason-tool-installer').setup { ensure_installed = ensure_installed }
