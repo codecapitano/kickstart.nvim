@@ -4,15 +4,10 @@
 -- See the kickstart.nvim README for more information
 return {
   {
-    'catppuccin/nvim',
-    name = 'catppuccin',
+    'rose-pine/neovim',
+    name = 'rose-pine',
     priority = 1000,
-    config = function()
-      require('catppuccin').setup {
-        flavour = 'mocha',
-      }
-      vim.cmd.colorscheme 'catppuccin'
-    end,
+    config = function() vim.cmd.colorscheme 'rose-pine' end,
   },
   {
     'coder/claudecode.nvim',
