@@ -13,12 +13,14 @@ return {
   keys = {
     { '\\', ':Neotree toggle<CR>', desc = 'NeoTree toggle', silent = true },
     { '<leader>er', ':Neotree reveal<CR>', desc = 'NeoTree reveal file', silent = true },
+    { '<leader>eg', ':Neotree git_status<CR>', desc = 'NeoTree git status', silent = true },
   },
   opts = {
     filesystem = {
       window = {
         mappings = {
           ['\\'] = 'close_window',
+          ['g'] = function() vim.cmd 'Neotree git_status' end,
         },
       },
     },

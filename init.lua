@@ -80,7 +80,7 @@ vim.o.scrolloff = 10
 vim.o.confirm = true
 
 -- Font (applies to GUI clients like Neovide; terminal font/ligatures are set in the terminal emulator)
-vim.opt.guifont = 'MonoLisa:h13'
+vim.opt.guifont = 'MonoLisa:h14'
 
 -- [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`
@@ -88,6 +88,10 @@ vim.opt.guifont = 'MonoLisa:h13'
 -- Clear highlights on search when pressing <Esc> in normal mode
 --  See `:help hlsearch`
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
+
+-- Buffer navigation
+vim.keymap.set('n', '<S-h>', '<cmd>bprevious<CR>', { desc = 'Previous buffer', silent = true })
+vim.keymap.set('n', '<S-l>', '<cmd>bnext<CR>', { desc = 'Next buffer', silent = true })
 
 -- Diagnostic Config & Keymaps
 -- See :help vim.diagnostic.Opts
@@ -157,6 +161,12 @@ vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper win
 
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
+
+-- Exclude sidebar-style buffers from the tabline
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = { 'neo-tree' },
+  callback = function(args) vim.bo[args.buf].buflisted = false end,
+})
 
 -- Highlight when yanking (copying) text
 --  Try it with `yap` in normal mode
@@ -257,6 +267,11 @@ require('lazy').setup({
         html = { 'biome', 'prettier', stop_after_first = true },
         json = { 'biome', 'prettier', stop_after_first = true },
       },
+      formatters = {
+        biome = {
+          condition = function(_, ctx) return vim.fs.find({ 'biome.json', 'biome.jsonc' }, { path = ctx.filename, upward = true })[1] ~= nil end,
+        },
+      },
     },
   },
 
@@ -275,6 +290,7 @@ require('lazy').setup({
       --  - yinq - [Y]ank [I]nside [N]ext [Q]uote
       --  - ci'  - [C]hange [I]nside [']quote
       require('mini.ai').setup { n_lines = 500 }
+      require('mini.tabline').setup()
 
       -- Add/delete/replace surroundings (brackets, quotes, etc.)
       --
