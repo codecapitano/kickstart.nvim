@@ -10,19 +10,43 @@ return {
     config = function() vim.cmd.colorscheme 'rose-pine' end,
   },
   {
-    'coder/claudecode.nvim',
-    dependencies = { 'folke/snacks.nvim' },
-    config = true,
+    'nickjvandyke/opencode.nvim',
+    version = '*',
+    dependencies = {
+      {
+        'folke/snacks.nvim',
+        optional = true,
+        opts = {
+          input = {},
+          picker = {
+            actions = {
+              opencode_send = function(...) return require('opencode').snacks_picker_send(...) end,
+            },
+            win = {
+              input = {
+                keys = {
+                  ['<a-a>'] = { 'opencode_send', mode = { 'n', 'i' } },
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+    config = function()
+      ---@type opencode.Opts
+      vim.g.opencode_opts = {}
+      vim.o.autoread = true
+    end,
     keys = {
-      { '<leader>ac', '<cmd>ClaudeCode<cr>', desc = 'Toggle Claude' },
-      { '<leader>af', '<cmd>ClaudeCodeFocus<cr>', desc = 'Focus Claude' },
-      { '<leader>ar', '<cmd>ClaudeCode --resume<cr>', desc = 'Resume Claude' },
-      { '<leader>aC', '<cmd>ClaudeCode --continue<cr>', desc = 'Continue Claude' },
-      { '<leader>am', '<cmd>ClaudeCodeSelectModel<cr>', desc = 'Select Claude model' },
-      { '<leader>ab', '<cmd>ClaudeCodeAdd %<cr>', desc = 'Add current buffer' },
-      { '<leader>as', '<cmd>ClaudeCodeSend<cr>', mode = 'v', desc = 'Send to Claude' },
-      { '<leader>aa', '<cmd>ClaudeCodeDiffAccept<cr>', desc = 'Accept diff' },
-      { '<leader>ad', '<cmd>ClaudeCodeDiffDeny<cr>', desc = 'Deny diff' },
+      { '<leader>ao', function() require('opencode').toggle() end, mode = { 'n', 't' }, desc = 'Toggle opencode' },
+      { '<leader>aa', function() require('opencode').ask('@this: ', { submit = true }) end, mode = { 'n', 'x' }, desc = 'Ask opencode' },
+      { '<leader>as', function() require('opencode').select() end, mode = { 'n', 'x' }, desc = 'Select opencode action' },
+      { '<leader>au', function() require('opencode').command 'session.undo' end, desc = 'Undo last opencode action' },
+      { '<leader>aR', function() require('opencode').command 'session.redo' end, desc = 'Redo last opencode action' },
+      { '<leader>an', function() require('opencode').command 'session.new' end, desc = 'New opencode session' },
+      { '<leader>al', function() require('opencode').command 'session.list' end, desc = 'List opencode sessions' },
+      { '<leader>ai', function() require('opencode').command 'session.interrupt' end, desc = 'Interrupt opencode' },
     },
   },
   {
